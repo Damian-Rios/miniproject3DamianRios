@@ -1,8 +1,5 @@
 import os
 from flask import Flask
-from .db import init_db
-from .auth import auth_bp
-from .dashboard import dashboard_bp
 
 
 def create_app(test_config=None):
@@ -12,7 +9,7 @@ def create_app(test_config=None):
     # Set default configuration
     app.config.from_mapping(
         SECRET_KEY='dev',
-        DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
+        DATABASE=os.path.join(app.instance_path, 'bookNest.sqlite'),
     )
 
     if test_config is None:
@@ -29,13 +26,17 @@ def create_app(test_config=None):
         pass
 
     # Initialize the database
-    init_db(app)
+    from .db import init_app
+    init_app(app)
 
     # Register Blueprints
-    app.register_blueprint(auth_bp, url_prefix='/auth')  # Handles registration, login, etc.
-    app.register_blueprint(dashboard_bp, url_prefix='/dashboard')  # Handles user dashboard
+    from .auth import auth_bp
+    app.register_blueprint(auth_bp, url_prefix='/auth')  # Handles authentication
+
+    from .dashboard import dashboard_bp
+    app.register_blueprint(dashboard_bp, url_prefix='/dashboard')  # User dashboard
 
     # Add the root URL (index) rule
-    app.add_url_rule('/', endpoint='index')
+    app.add_url_rule('/', endpoint='dashboard.index')
 
     return app

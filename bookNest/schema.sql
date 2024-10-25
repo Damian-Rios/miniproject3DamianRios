@@ -5,11 +5,11 @@ DROP TABLE IF EXISTS favorite;
 
 
 CREATE TABLE user (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username TEXT NOT NULL UNIQUE,
-    email TEXT NOT NULL UNIQUE,
-    password TEXT NOT NULL,
-    role TEXT NOT NULL
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  username TEXT UNIQUE NOT NULL,
+  password TEXT NOT NULL,
+  firstname TEXT NOT NULL,
+  lastname TEXT NOT NULL
 );
 
 

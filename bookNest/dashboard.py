@@ -9,7 +9,7 @@ from bookNest.db import get_db
 dashboard_bp = Blueprint('dashboard', __name__)
 
 
-@dashboard_bp.route('/index')
+@dashboard_bp.route('/')
 @login_required
 def index():
     db = get_db()
