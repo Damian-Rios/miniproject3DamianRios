@@ -15,10 +15,12 @@ CREATE TABLE user (
 
 CREATE TABLE book (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER,
     title TEXT NOT NULL,
     author TEXT NOT NULL,
     genre TEXT NOT NULL,
-    rating REAL DEFAULT 0
+    rating REAL DEFAULT 0,
+    FOREIGN KEY (user_id) REFERENCES user(id)
 );
 
 

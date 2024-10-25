@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, g, render_template, request, redirect, url_for, flash
 from .db import get_db
 
 books_bp = Blueprint('books', __name__, url_prefix='/books')
@@ -16,8 +16,8 @@ def add_book():
             flash('All fields except rating are required!')
         else:
             db.execute(
-                'INSERT INTO book (title, author, genre, rating) VALUES (?, ?, ?, ?)',
-                (title, author, genre, rating if rating else 0)
+                'INSERT INTO book (title, author, genre, rating, user_id) VALUES (?, ?, ?, ?, ?)',
+                (title, author, genre, rating if rating else 0, g.user['id'])
             )
             db.commit()
             flash('Book added successfully!')

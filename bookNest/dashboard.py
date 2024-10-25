@@ -13,7 +13,13 @@ dashboard_bp = Blueprint('dashboard', __name__)
 @login_required
 def index():
     db = get_db()
-    books = db.execute('SELECT * FROM book').fetchall()
+    genre = request.args.get('genre')
+
+    if genre:
+        books = db.execute('SELECT * FROM book WHERE genre = ?', (genre,)).fetchall()  # Filter by genre
+    else:
+        books = db.execute('SELECT * FROM book').fetchall()  # Get all books
+
     return render_template('dashboard/index.html', books = books)
 
 

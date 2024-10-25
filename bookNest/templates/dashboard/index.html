@@ -4,10 +4,39 @@
 
 {% block content %}
 <h2>Welcome to Your Dashboard</h2>
+
+<!-- Link to Add a New Book -->
+<a href="{{ url_for('books.add_book') }}" class="btn">Add a New Book</a>
+
 <h3>Books</h3>
-<ul>
-    {% for book in books %}
-        <li>{{ book.title }} by {{ book.author }}</li>
-    {% endfor %}
-</ul>
+<!-- Sort by Genre (you can implement sorting functionality here) -->
+<!-- Assuming genres are predefined -->
+<form method="GET" action="{{ url_for('dashboard.index') }}">
+    <label for="genre">Sort by Genre:</label>
+    <select name="genre" id="genre">
+        <option value="">All Genres</option>
+        <option value="Fiction">Fiction</option>
+        <option value="Non-Fiction">Non-Fiction</option>
+        <option value="Sci-Fi">Sci-Fi</option>
+        <!-- Add more genres as needed -->
+    </select>
+    <button type="submit">Sort</button>
+</form>
+
+<!-- Display all books -->
+{% for book in books %}
+    <div>
+        <h3>{{ book.title }}</h3>
+        <p>Author: {{ book.author }}</p>
+        <p>Genre: {{ book.genre }}</p>
+        <p>Rating: {{ book.rating }}</p>
+
+        {% if g.user and book.user_id == g.user.id %}  <!-- Show buttons only if user is the owner -->
+            <form action="{{ url_for('books.delete_book', id=book.id) }}" method="POST" style="display:inline;">
+                <button type="submit">Delete</button>
+            </form>
+            <a href="{{ url_for('books.update_book', id=book.id) }}">Edit</a>
+        {% endif %}
+    </div>
+{% endfor %}
 {% endblock %}
