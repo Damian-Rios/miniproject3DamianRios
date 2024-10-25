@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 from flask import Flask
 
 
@@ -36,7 +37,15 @@ def create_app(test_config=None):
     from .dashboard import dashboard_bp
     app.register_blueprint(dashboard_bp, url_prefix='/dashboard')  # User dashboard
 
+    from .book import books_bp
+    app.register_blueprint(books_bp, url_prefix='/books')  # Handles book creation and modification
+
     # Add the root URL (index) rule
     app.add_url_rule('/', endpoint='dashboard.index')
+
+    # Add context processor
+    @app.context_processor
+    def inject_now():
+        return {'current_year': datetime.utcnow().year}
 
     return app

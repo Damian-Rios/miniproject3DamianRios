@@ -9,7 +9,11 @@
     <textarea id="review_text" name="review_text" required>{{ review.review_text }}</textarea>
 
     <label for="rating">Rating:</label>
-    <input id="rating" type="number" name="rating" min="1" max="5" required value="{{ review.rating }}">
+    <select id="rating" name="rating" required>
+        {% for i in range(1, 6) %}
+            <option value="{{ i }}" {% if review and review.rating == i %}selected{% endif %}>{{ i }}</option>
+        {% endfor %}
+    </select>
 
     <button type="submit">Update Review</button>
 </form>
