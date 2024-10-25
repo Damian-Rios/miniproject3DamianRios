@@ -1,10 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block title %}Update Review{% endblock %}
+
+{% block content %}
+<h2>Update Your Review</h2>
+<form method="post">
+    <label for="review_text">Review:</label>
+    <textarea id="review_text" name="review_text" required>{{ review.review_text }}</textarea>
+
+    <label for="rating">Rating:</label>
+    <input id="rating" type="number" name="rating" min="1" max="5" required value="{{ review.rating }}">
+
+    <button type="submit">Update Review</button>
+</form>
+{% endblock %}

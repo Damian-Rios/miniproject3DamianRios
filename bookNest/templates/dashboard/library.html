@@ -1,10 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block title %}Library{% endblock %}
+
+{% block content %}
+<h2>Your Library</h2>
+<ul>
+    {% for favorite in favorites %}
+        <li>{{ favorite.title }} by {{ favorite.author }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}
