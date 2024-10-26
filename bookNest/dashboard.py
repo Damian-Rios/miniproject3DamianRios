@@ -39,15 +39,3 @@ def index():
         flash('No books found. Add some books to get started!')
 
     return render_template('dashboard/index.html', books=books)
-
-
-@dashboard_bp.route('/library')
-@login_required
-def library():
-    user_id = session['user_id']
-    db = get_db()
-    favorites = db.execute(
-        'SELECT * FROM book JOIN favorite ON book.id = favorite.book_id WHERE favorite.user_id = ?',
-        (user_id,)
-    ).fetchall()
-    return render_template('dashboard/library.html', favorites=favorites)

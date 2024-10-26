@@ -17,6 +17,12 @@
     <a href="{{ url_for('review.create', book_id=book.id) }}" class="btn btn-primary">Write a Review</a>
 {% endif %}
 
+
+<form method="post" action="{{ url_for('library.add_to_library', book_id=book.id) }}">
+    <button type="submit" class="btn btn-primary">Add to Library</button>
+</form>
+
+
 <h3>Reviews</h3>
 {% for review in reviews %}
     <div class="{% if review.rating >= 4 %}positive-review{% else %}negative-review{% endif %}">

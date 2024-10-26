@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS book;
 DROP TABLE IF EXISTS review;
-DROP TABLE IF EXISTS favorite;
+DROP TABLE IF EXISTS library;
 
 
 CREATE TABLE user (
@@ -36,11 +36,12 @@ CREATE TABLE review (
 );
 
 
-CREATE TABLE favorite (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+CREATE TABLE library (
     user_id INTEGER NOT NULL,
     book_id INTEGER NOT NULL,
-    FOREIGN KEY(user_id) REFERENCES user(id),
-    FOREIGN KEY(book_id) REFERENCES book(id),
-    UNIQUE (user_id, book_id)
+    favorite BOOLEAN DEFAULT FALSE,
+    status TEXT CHECK (status IN ('read', 'currently reading', 'plan to read')),
+    PRIMARY KEY (user_id, book_id),
+    FOREIGN KEY (user_id) REFERENCES users (id),
+    FOREIGN KEY (book_id) REFERENCES book (id)
 );

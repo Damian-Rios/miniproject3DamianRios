@@ -11,7 +11,7 @@
         <nav>
             <ul>
                 <li><a href="{{ url_for('dashboard.index') }}">Home</a></li>
-                <li><a href="{{ url_for('dashboard.library') }}">Library</a></li>
+                <li><a href="{{ url_for('library.library') }}">Library</a></li>
                 {% if g.user %}
                     <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
                 {% else %}
