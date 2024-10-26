@@ -8,33 +8,38 @@ from bookNest.db import get_db
 
 dashboard_bp = Blueprint('dashboard', __name__)
 
-
 @dashboard_bp.route('/')
 @login_required
 def index():
     db = get_db()
     genre = request.args.get('genre')
+    sort_by_rating = request.args.get('sort_by_rating')
 
-    # Fetch books based on genre
+    # Construct base query
+    query = '''
+        SELECT b.id, b.title, b.author, b.genre, b.description, b.user_id,
+               COALESCE(AVG(r.rating), 0) AS avg_rating
+        FROM book b
+        LEFT JOIN review r ON b.id = r.book_id
+    '''
+    params = []
+
+    # Add genre filter if selected
     if genre:
-        books = db.execute('''
-            SELECT b.id, b.title, b.author, b.genre, b.description, b.user_id,
-                   COALESCE(AVG(r.rating), 0) AS avg_rating
-            FROM book b
-            LEFT JOIN review r ON b.id = r.book_id
-            WHERE b.genre = ?
-            GROUP BY b.id
-        ''', (genre,)).fetchall()
-    else:
-        books = db.execute('''
-            SELECT b.id, b.title, b.author, b.genre, b.description, b.user_id,
-                   COALESCE(AVG(r.rating), 0) AS avg_rating
-            FROM book b
-            LEFT JOIN review r ON b.id = r.book_id
-            GROUP BY b.id
-        ''').fetchall()
+        query += ' WHERE b.genre = ?'
+        params.append(genre)
 
-    # If no books are found, you could consider flashing a message or handling it in the template
+    # Group by book ID for avg_rating calculation
+    query += ' GROUP BY b.id'
+
+    # Add sorting by rating if selected
+    if sort_by_rating == 'desc':
+        query += ' ORDER BY avg_rating DESC'
+    elif sort_by_rating == 'asc':
+        query += ' ORDER BY avg_rating ASC'
+
+    books = db.execute(query, params).fetchall()
+
     if not books:
         flash('No books found. Add some books to get started!')
 
