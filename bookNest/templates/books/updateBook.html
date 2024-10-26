@@ -3,21 +3,31 @@
 {% block title %}Update Book{% endblock %}
 
 {% block content %}
-<h2>Update Book: {{ book.title }}</h2>
+<div class="container py-5">
+    <h2>Update Book: {{ book.title }}</h2>
 
-<form method="post">
-    <label for="title">Title</label>
-    <input type="text" name="title" id="title" value="{{ book.title }}" required>
+    <form method="post" class="mt-4">
+        <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" name="title" id="title" value="{{ book.title }}" class="form-control" required>
+        </div>
 
-    <label for="author">Author</label>
-    <input type="text" name="author" id="author" value="{{ book.author }}" required>
+        <div class="mb-3">
+            <label for="author" class="form-label">Author</label>
+            <input type="text" name="author" id="author" value="{{ book.author }}" class="form-control" required>
+        </div>
 
-    <label for="genre">Genre</label>
-    <input type="text" name="genre" id="genre" value="{{ book.genre }}" required>
+        <div class="mb-3">
+            <label for="genre" class="form-label">Genre</label>
+            <input type="text" name="genre" id="genre" value="{{ book.genre }}" class="form-control" required>
+        </div>
 
-    <label for="rating">Rating (optional)</label>
-    <input type="number" step="0.1" name="rating" id="rating" value="{{ book.rating }}">
+        <div class="mb-3">
+            <label for="rating" class="form-label">Rating (optional)</label>
+            <input type="number" step="0.1" name="rating" id="rating" value="{{ book.rating }}" class="form-control">
+        </div>
 
-    <button type="submit">Update Book</button>
-</form>
+        <button type="submit" class="btn btn-warning">Update Book</button>
+    </form>
+</div>
 {% endblock %}

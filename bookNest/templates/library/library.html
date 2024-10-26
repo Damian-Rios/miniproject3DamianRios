@@ -3,33 +3,35 @@
 {% block title %}Library{% endblock %}
 
 {% block content %}
-<h2>Your Library</h2>
+<div class="container py-5">
+    <h2>Your Library</h2>
 
-{% for book in books %}
-    <div class="book">
-        <h3>{{ book.title }}</h3>
-        <p>Status: {{ book.status }}</p>
-        <form method="post" action="{{ url_for('library.update_status', book_id=book.id) }}">
-            <label for="status">Set Status:</label>
-            <select name="status" required>
-                <option value="">Select...</option>
-                <option value="read" {% if book.status == 'read' %}selected{% endif %}>Read</option>
-                <option value="currently reading" {% if book.status == 'currently reading' %}selected{% endif %}>Currently Reading</option>
-                <option value="plan to read" {% if book.status == 'plan to read' %}selected{% endif %}>Plan to Read</option>
-            </select>
-            <button type="submit" class="btn btn-primary">Update Status</button>
-        </form>
+    {% for book in books %}
+        <div class="book card mb-4 p-3">
+            <h3 class="card-title">{{ book.title }}</h3>
+            <p class="card-text"><strong>Status:</strong> {{ book.status }}</p>
 
-        <form method="post" action="{{ url_for('library.toggle_favorite', book_id=book.id) }}">
-            <button type="submit" class="btn {% if book.favorite %}btn-warning{% else %}btn-secondary{% endif %}">
-                {% if book.favorite %}Unfavorite{% else %}Favorite{% endif %}
-            </button>
-        </form>
+            <form method="post" action="{{ url_for('library.update_status', book_id=book.id) }}" class="mb-3">
+                <label for="status" class="form-label">Set Status:</label>
+                <select name="status" class="form-select" required>
+                    <option value="">Select...</option>
+                    <option value="read" {% if book.status == 'read' %}selected{% endif %}>Read</option>
+                    <option value="currently reading" {% if book.status == 'currently reading' %}selected{% endif %}>Currently Reading</option>
+                    <option value="plan to read" {% if book.status == 'plan to read' %}selected{% endif %}>Plan to Read</option>
+                </select>
+                <button type="submit" class="btn btn-primary mt-2">Update Status</button>
+            </form>
 
-        <form method="post" action="{{ url_for('library.remove_from_library', book_id=book.id) }}">
-            <button type="submit" class="btn btn-danger">Remove from Library</button>
-        </form>
-    </div>
-{% endfor %}
+            <form method="post" action="{{ url_for('library.toggle_favorite', book_id=book.id) }}" class="mb-3">
+                <button type="submit" class="btn {% if book.favorite %}btn-warning{% else %}btn-secondary{% endif %}">
+                    {% if book.favorite %}Unfavorite{% else %}Favorite{% endif %}
+                </button>
+            </form>
 
+            <form method="post" action="{{ url_for('library.remove_from_library', book_id=book.id) }}">
+                <button type="submit" class="btn btn-danger">Remove from Library</button>
+            </form>
+        </div>
+    {% endfor %}
+</div>
 {% endblock %}
