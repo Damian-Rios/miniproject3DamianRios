@@ -40,6 +40,9 @@ def create_app(test_config=None):
     from .book import books_bp
     app.register_blueprint(books_bp, url_prefix='/books')  # Handles book creation and modification
 
+    from .review import review_bp
+    app.register_blueprint(review_bp, url_prefix='/review')
+
     # Add the root URL (index) rule
     app.add_url_rule('/', endpoint='dashboard.index')
 

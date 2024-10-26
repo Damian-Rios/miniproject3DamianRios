@@ -16,10 +16,22 @@ def index():
     genre = request.args.get('genre')
 
     if genre:
-        books = db.execute('SELECT * FROM book WHERE genre = ?', (genre,)).fetchall()  # Filter by genre
+        books = db.execute('''
+            SELECT b.id, b.title, b.author, b.genre, b.user_id,
+                   COALESCE(AVG(r.rating), 0) AS avg_rating
+            FROM book b
+            LEFT JOIN review r ON b.id = r.book_id
+            WHERE b.genre = ?
+            GROUP BY b.id
+        ''', (genre,)).fetchall()
     else:
-        books = db.execute('SELECT * FROM book').fetchall()  # Get all books
-
+        books = db.execute('''
+            SELECT b.id, b.title, b.author, b.genre, b.user_id,
+                   COALESCE(AVG(r.rating), 0) AS avg_rating
+            FROM book b
+            LEFT JOIN review r ON b.id = r.book_id
+            GROUP BY b.id
+        ''').fetchall()
     return render_template('dashboard/index.html', books = books)
 
 

@@ -15,30 +15,31 @@ CREATE TABLE user (
 
 CREATE TABLE book (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER,
+    user_id INTEGER NOT NULL,
     title TEXT NOT NULL,
     author TEXT NOT NULL,
     genre TEXT NOT NULL,
-    rating REAL DEFAULT 0,
-    FOREIGN KEY (user_id) REFERENCES user(id)
+    description TEXT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
 );
 
 
 CREATE TABLE review (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER,
-    book_id INTEGER,
+    user_id INTEGER NOT NULL,
+    book_id INTEGER NOT NULL,
     review_text TEXT NOT NULL,
-    rating INTEGER NOT NULL,
-    FOREIGN KEY(user_id) REFERENCES user(id),
-    FOREIGN KEY(book_id) REFERENCES book(id)
+    rating INTEGER NOT NULL CHECK ( rating >= 1 AND rating <= 5),
+    FOREIGN KEY(user_id) REFERENCES user(id) ON DELETE CASCADE,
+    FOREIGN KEY(book_id) REFERENCES book(id) ON DELETE CASCADE
 );
 
 
 CREATE TABLE favorite (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER,
-    book_id INTEGER,
+    user_id INTEGER NOT NULL,
+    book_id INTEGER NOT NULL,
     FOREIGN KEY(user_id) REFERENCES user(id),
-    FOREIGN KEY(book_id) REFERENCES book(id)
+    FOREIGN KEY(book_id) REFERENCES book(id),
+    UNIQUE (user_id, book_id)
 );

@@ -9,8 +9,7 @@
 <a href="{{ url_for('books.add_book') }}" class="btn">Add a New Book</a>
 
 <h3>Books</h3>
-<!-- Sort by Genre (you can implement sorting functionality here) -->
-<!-- Assuming genres are predefined -->
+<!-- Sort by Genre -->
 <form method="GET" action="{{ url_for('dashboard.index') }}">
     <label for="genre">Sort by Genre:</label>
     <select name="genre" id="genre">
@@ -18,7 +17,12 @@
         <option value="Fiction">Fiction</option>
         <option value="Non-Fiction">Non-Fiction</option>
         <option value="Sci-Fi">Sci-Fi</option>
-        <!-- Add more genres as needed -->
+        <option value="Fantasy">Fantasy</option>
+        <option value="Mystery">Mystery</option>
+        <option value="Dystopian">Dystopian</option>
+        <option value="Romance">Romance</option>
+        <option value="Young Adult">Young Adult</option>
+        <option value="Horror">Horror</option>
     </select>
     <button type="submit">Sort</button>
 </form>
@@ -29,13 +33,17 @@
         <h3>{{ book.title }}</h3>
         <p>Author: {{ book.author }}</p>
         <p>Genre: {{ book.genre }}</p>
-        <p>Rating: {{ book.rating }}</p>
+        <p>Average Rating: {{ book.avg_rating | round(1) }}</p>
 
         {% if g.user and book.user_id == g.user.id %}  <!-- Show buttons only if user is the owner -->
             <form action="{{ url_for('books.delete_book', id=book.id) }}" method="POST" style="display:inline;">
                 <button type="submit">Delete</button>
             </form>
             <a href="{{ url_for('books.update_book', id=book.id) }}">Edit</a>
+
+        <a href="{{ url_for('review.create', book_id=book.id) }}" class="btn btn-primary">
+            Write a Review
+        </a>
         {% endif %}
     </div>
 {% endfor %}

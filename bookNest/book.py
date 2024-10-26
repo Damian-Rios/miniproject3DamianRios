@@ -9,15 +9,16 @@ def add_book():
         title = request.form['title']
         author = request.form['author']
         genre = request.form['genre']
-        rating = request.form['rating']
-        db = get_db()
+        description = request.form['description']
+        user_id = g.user['id']
 
-        if not title or not author or not genre:
-            flash('All fields except rating are required!')
+        if not title or not author or not genre or not description:
+            flash('All fields are required!')
         else:
+            db = get_db()
             db.execute(
-                'INSERT INTO book (title, author, genre, rating, user_id) VALUES (?, ?, ?, ?, ?)',
-                (title, author, genre, rating if rating else 0, g.user['id'])
+                'INSERT INTO book (title, author, genre, description, user_id) VALUES (?, ?, ?, ?, ?)',
+                (title, author, genre, description, user_id)
             )
             db.commit()
             flash('Book added successfully!')
@@ -44,14 +45,14 @@ def update_book(id):
         title = request.form['title']
         author = request.form['author']
         genre = request.form['genre']
-        rating = request.form['rating']
+        description = request.form['description']  # Added description
 
-        if not title or not author or not genre:
-            flash('All fields except rating are required!')
+        if not title or not author or not genre or not description:
+            flash('All fields are required!')
         else:
             db.execute(
-                'UPDATE book SET title = ?, author = ?, genre = ?, rating = ? WHERE id = ?',
-                (title, author, genre, rating, id)
+                'UPDATE book SET title = ?, author = ?, genre = ?, description = ? WHERE id = ?',
+                (title, author, genre, description, id)
             )
             db.commit()
             flash('Book updated successfully!')
