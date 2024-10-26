@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Write a Review for Book ID {{ book_id }}</h2>
+<h2>Write a Review for {{ book_title }}</h2>
 
 <form method="post">
     <div class="form-group">
@@ -21,6 +21,6 @@
     </div>
 
     <button type="submit" class="btn btn-success">Submit Review</button>
-    <a href="{{ url_for('dashboard.index') }}" class="btn btn-secondary">Cancel</a>
+    <a href="{{ url_for('books.view_book', id=book_id) }}" class="btn btn-secondary">Cancel</a>
 </form>
 {% endblock %}

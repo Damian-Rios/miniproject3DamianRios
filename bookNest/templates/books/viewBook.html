@@ -9,9 +9,13 @@
 <p>Description: {{ book.description }}</p>
 <p>Average Rating: {% if avg_rating is not none %}{{ avg_rating | round(1) }}{% else %}N/A{% endif %}</p>
 
-<a href="{{ url_for('review.create', book_id=book.id) }}" class="btn btn-primary">
-  Write a Review
-</a>
+{% if user_review %}
+    <!-- Show 'Edit Your Review' button if user already reviewed -->
+    <a href="{{ url_for('review.update', id=user_review['id']) }}" class="btn btn-primary">Edit Your Review</a>
+{% else %}
+    <!-- Show 'Write a Review' button if user hasn't reviewed -->
+    <a href="{{ url_for('review.create', book_id=book.id) }}" class="btn btn-primary">Write a Review</a>
+{% endif %}
 
 <h3>Reviews</h3>
 {% for review in reviews %}

@@ -1,5 +1,6 @@
-from flask import Blueprint, g, render_template, request, redirect, url_for, flash
+from flask import Blueprint, g, render_template, request, redirect, url_for, session, flash
 from .db import get_db
+from bookNest.auth import login_required
 
 books_bp = Blueprint('books', __name__, url_prefix='/books')
 
@@ -37,32 +38,44 @@ def delete_book(id):
 
 
 @books_bp.route('/view/<int:id>')
+@login_required
 def view_book(id):
     db = get_db()
+    user_id = session.get('user_id')  # Get the current logged-in user
 
-    # Get the book
+    # Get the book details
     book = db.execute('SELECT * FROM book WHERE id = ?', (id,)).fetchone()
-
     if book is None:
         flash('Book not found.')
-        return redirect(url_for('dashboard.index'))  # Redirect if book not found
+        return redirect(url_for('dashboard.index'))
 
-    # Get reviews along with usernames
-    reviews = db.execute('SELECT r.*, u.username FROM review r JOIN user u ON r.user_id = u.id WHERE r.book_id = ?',
-                         (id,)).fetchall()
+    # Get all reviews along with usernames
+    reviews = db.execute(
+        'SELECT r.id, r.rating, r.review_text, r.created_at, u.username FROM review r '
+        'JOIN user u ON r.user_id = u.id WHERE r.book_id = ?',
+        (id,)
+    ).fetchall()
 
-    # Get the average rating
-    avg_rating_row = db.execute('SELECT COALESCE(AVG(r.rating), 0) AS avg_rating FROM review r WHERE r.book_id = ?',
-                                (id,)).fetchone()
+    # Check if the user has already reviewed this book
+    user_review = db.execute(
+        'SELECT id FROM review WHERE user_id = ? AND book_id = ?',
+        (user_id, id)
+    ).fetchone()
 
-    # Check if avg_rating_row is valid and convert to float if necessary
-    avg_rating = avg_rating_row['avg_rating'] if avg_rating_row else 0.0
-    try:
-        avg_rating = round(float(avg_rating), 1)  # Round to one decimal place
-    except TypeError:
-        avg_rating = 0.0  # Default to 0 if rounding fails
+    # Calculate the average rating
+    avg_rating_row = db.execute(
+        'SELECT COALESCE(AVG(r.rating), 0) AS avg_rating FROM review r WHERE r.book_id = ?',
+        (id,)
+    ).fetchone()
+    avg_rating = avg_rating_row['avg_rating'] if avg_rating_row else None
 
-    return render_template('books/viewBook.html', book=book, reviews=reviews, avg_rating=avg_rating)
+    return render_template(
+        'books/viewBook.html',
+        book=book,
+        reviews=reviews,
+        avg_rating=avg_rating,
+        user_review=user_review  # Pass the user's review ID if it exists
+    )
 
 
 @books_bp.route('/update/<int:id>', methods=('GET', 'POST'))

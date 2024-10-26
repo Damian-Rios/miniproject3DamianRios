@@ -30,6 +30,7 @@ CREATE TABLE review (
     book_id INTEGER NOT NULL,
     review_text TEXT NOT NULL,
     rating INTEGER NOT NULL CHECK ( rating >= 1 AND rating <= 5),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  -- Add this line
     FOREIGN KEY(user_id) REFERENCES user(id) ON DELETE CASCADE,
     FOREIGN KEY(book_id) REFERENCES book(id) ON DELETE CASCADE
 );
