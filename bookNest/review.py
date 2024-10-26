@@ -13,7 +13,7 @@ def create(book_id):
     if request.method == 'POST':
         review_text = request.form['review_text']
         rating = request.form['rating']
-        user_id = session['user_id']
+        user_id = session.get('user_id')  # Use .get() to safely access session variable
         error = None
 
         if not review_text:
@@ -31,7 +31,7 @@ def create(book_id):
             )
             db.commit()
             flash('Review added successfully!')
-            return redirect(url_for('dashboard.index'))
+            return redirect(url_for('books.view_book', id=book_id))  # Redirect to view the book after adding the review
 
     return render_template('review/create.html', book_id=book_id)
 

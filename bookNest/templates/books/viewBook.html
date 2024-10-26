@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ book.title }}{% endblock %}
+
+{% block content %}
+<h2>{{ book.title }}</h2>
+<p>Author: {{ book.author }}</p>
+<p>Genre: {{ book.genre }}</p>
+<p>Description: {{ book.description }}</p>
+<p>Average Rating: {% if avg_rating is not none %}{{ avg_rating | round(1) }}{% else %}N/A{% endif %}</p>
+
+<a href="{{ url_for('review.create', book_id=book.id) }}" class="btn btn-primary">
+  Write a Review
+</a>
+
+<h3>Reviews</h3>
+{% for review in reviews %}
+    <div class="{% if review.rating >= 4 %}positive-review{% else %}negative-review{% endif %}">
+        <p><strong>Rating:</strong> {{ review.rating }}</p>
+        <p><strong>Review:</strong> {{ review.review_text }}</p>
+        <p><strong>Reviewed by:</strong> {{ review.username }}</p>
+        {% if review.created_at %}  <!-- Display date if available -->
+            <p><strong>Reviewed on:</strong> {{ review.created_at.strftime('%Y-%m-%d') }}</p>
+        {% endif %}
+    </div>
+    <hr>
+{% endfor %}
+
+{% endblock %}
