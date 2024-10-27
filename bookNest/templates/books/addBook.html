@@ -4,21 +4,19 @@
 
 {% block content %}
 <div class="container py-5">
-    <h2>Add a New Book</h2>
-    <form method="post" class="mt-4">
-        <div class="mb-3">
-            <label for="title" class="form-label">Title:</label>
-            <input type="text" id="title" name="title" class="form-control" required>
+    <h2 class="text-center mb-4">Add New Book</h2>
+    <form action="{{ url_for('books.add_book') }}" method="POST" class="row g-3 mb-4">
+        <div class="col-md-6">
+            <label for="title" class="form-label">Book Title</label>
+            <input type="text" class="form-control" id="title" name="title" required>
         </div>
-
-        <div class="mb-3">
-            <label for="author" class="form-label">Author:</label>
-            <input type="text" id="author" name="author" class="form-control" required>
+        <div class="col-md-6">
+            <label for="author" class="form-label">Author</label>
+            <input type="text" class="form-control" id="author" name="author" required>
         </div>
-
-        <div class="mb-3">
-            <label for="genre" class="form-label">Genre:</label>
-            <select id="genre" name="genre" class="form-select" required>
+        <div class="col-md-6">
+            <label for="genre" class="form-label">Genre</label>
+            <select name="genre" id="genre" class="form-select">
                 <option value="Fiction">Fiction</option>
                 <option value="Non-Fiction">Non-Fiction</option>
                 <option value="Sci-Fi">Sci-Fi</option>
@@ -30,13 +28,13 @@
                 <option value="Horror">Horror</option>
             </select>
         </div>
-
-        <div class="mb-3">
-            <label for="description" class="form-label">Description:</label>
-            <textarea id="description" name="description" class="form-control" required></textarea>
+        <div class="col-md-12">
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control" id="description" name="description" rows="3"></textarea>
         </div>
-
-        <button type="submit" class="btn btn-primary">Add Book</button>
+        <div class="col-12 text-center">
+            <button type="submit" class="btn btn-primary">Add Book</button>
+        </div>
     </form>
 </div>
 {% endblock %}

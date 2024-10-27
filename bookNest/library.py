@@ -54,25 +54,6 @@ def update_status(book_id):
     return redirect(url_for('library.library'))
 
 
-@library_bp.route('/toggle_favorite/<int:book_id>', methods=['POST'])
-def toggle_favorite(book_id):
-    user_id = session.get('user_id')
-    db = get_db()
-    current_favorite = db.execute(
-        'SELECT favorite FROM library WHERE user_id = ? AND book_id = ?',
-        (user_id, book_id)
-    ).fetchone()
-
-    new_favorite = not current_favorite['favorite'] if current_favorite else True
-    db.execute(
-        'UPDATE library SET favorite = ? WHERE user_id = ? AND book_id = ?',
-        (new_favorite, user_id, book_id)
-    )
-    db.commit()
-    flash('Favorite status updated!', 'success')
-    return redirect(url_for('library.library'))
-
-
 @library_bp.route('/remove/<int:book_id>', methods=['POST'])
 def remove_from_library(book_id):
     user_id = session.get('user_id')

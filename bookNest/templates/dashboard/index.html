@@ -6,8 +6,10 @@
 <div class="container py-5">
     <h2 class="text-center mb-4">Welcome to Your Dashboard</h2>
 
-    <!-- Button to open the Add Book Modal -->
-    <button class="btn btn-primary mb-4" data-bs-toggle="modal" data-bs-target="#addBookModal">Add a New Book</button>
+    <!-- Link to Add New Book page -->
+    <a href="{{ url_for('books.add_book') }}" class="btn btn-primary mb-4">
+        Add New Book
+    </a>
 
     <!-- Sort Form -->
     <form method="GET" action="{{ url_for('dashboard.index') }}" class="row g-3 mb-4">
@@ -15,17 +17,23 @@
             <label for="genre" class="form-label">Sort by Genre</label>
             <select name="genre" id="genre" class="form-select">
                 <option value="">All Genres</option>
-                <option value="Fiction">Fiction</option>
-                <option value="Non-Fiction">Non-Fiction</option>
-                <!-- Add other genres here -->
+                <option value="Fiction" {% if request.args.get('genre') == 'Fiction' %}selected{% endif %}>Fiction</option>
+                <option value="Non-Fiction" {% if request.args.get('genre') == 'Non-Fiction' %}selected{% endif %}>Non-Fiction</option>
+                <option value="Sci-Fi" {% if request.args.get('genre') == 'Sci-Fi' %}selected{% endif %}>Sci-Fi</option>
+                <option value="Fantasy" {% if request.args.get('genre') == 'Fantasy' %}selected{% endif %}>Fantasy</option>
+                <option value="Mystery" {% if request.args.get('genre') == 'Mystery' %}selected{% endif %}>Mystery</option>
+                <option value="Dystopian" {% if request.args.get('genre') == 'Dystopian' %}selected{% endif %}>Dystopian</option>
+                <option value="Romance" {% if request.args.get('genre') == 'Romance' %}selected{% endif %}>Romance</option>
+                <option value="Young Adult" {% if request.args.get('genre') == 'Young Adult' %}selected{% endif %}>Young Adult</option>
+                <option value="Horror" {% if request.args.get('genre') == 'Horror' %}selected{% endif %}>Horror</option>
             </select>
         </div>
         <div class="col-md-4">
             <label for="sort_by_rating" class="form-label">Sort by Rating</label>
             <select name="sort_by_rating" id="sort_by_rating" class="form-select">
                 <option value="">None</option>
-                <option value="desc">Highest First</option>
-                <option value="asc">Lowest First</option>
+                <option value="desc" {% if request.args.get('sort_by_rating') == 'desc' %}selected{% endif %}>Highest First</option>
+                <option value="asc" {% if request.args.get('sort_by_rating') == 'asc' %}selected{% endif %}>Lowest First</option>
             </select>
         </div>
         <div class="col-md-4 align-self-end">
@@ -79,46 +87,6 @@
             </div>
         </div>
         {% endfor %}
-    </div>
-
-    <!-- Add Book Modal -->
-    <div class="modal fade" id="addBookModal" tabindex="-1" aria-labelledby="addBookLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addBookLabel">Add New Book</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="{{ url_for('books.add_book') }}" method="POST">
-                        <div class="mb-3">
-                            <label for="title" class="form-label">Book Title</label>
-                            <input type="text" class="form-control" id="title" name="title" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="author" class="form-label">Author</label>
-                            <input type="text" class="form-control" id="author" name="author" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="genre" class="form-label">Genre</label>
-                            <select name="genre" id="genre" class="form-select">
-                                <option value="Fiction">Fiction</option>
-                                <option value="Non-Fiction">Non-Fiction</option>
-                                <!-- Add other genres here -->
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="description" class="form-label">Description</label>
-                            <textarea class="form-control" id="description" name="description" rows="3"></textarea>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Add Book</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 {% endblock %}

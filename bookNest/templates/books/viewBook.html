@@ -18,9 +18,9 @@
         {% endif %}
     </div>
 
-    <form method="post" action="{{ url_for('library.add_to_library', book_id=book.id) }}">
-        <button type="submit" class="btn btn-success">Add to Library</button>
-    </form>
+    <div class="mb-3">
+        <a href="{{ url_for('library.add_to_library', book_id=book.id) }}" class="btn btn-success">Add to Library</a>
+    </div>
 
     <h3 class="mt-4">Reviews</h3>
     {% for review in reviews %}
