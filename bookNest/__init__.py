@@ -1,3 +1,7 @@
+### INF601 - Advanced Programming in Python
+### Damian Rios
+### Mini Project 3
+
 import os
 from datetime import datetime
 from flask import Flask

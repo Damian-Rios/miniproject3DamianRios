@@ -1,3 +1,7 @@
+### INF601 - Advanced Programming in Python
+### Damian Rios
+### Mini Project 3
+
 from flask import Blueprint, g, render_template, request, redirect, url_for, session, flash
 from .db import get_db
 from bookNest.auth import login_required

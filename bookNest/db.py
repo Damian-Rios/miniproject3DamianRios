@@ -1,3 +1,7 @@
+### INF601 - Advanced Programming in Python
+### Damian Rios
+### Mini Project 3
+
 import sqlite3
 import click
 from flask import current_app, g

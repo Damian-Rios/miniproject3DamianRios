@@ -1,3 +1,7 @@
+### INF601 - Advanced Programming in Python
+### Damian Rios
+### Mini Project 3
+
 from flask import (
     Blueprint, flash, render_template, request
 )
