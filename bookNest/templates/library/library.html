@@ -27,12 +27,10 @@
                     <button type="submit" class="btn btn-primary mt-2">Update Status</button>
                 </form>
 
-                <!-- Button trigger for the modal -->
                 <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#removeModal-{{ book.id }}">
                     Remove from Library
                 </button>
 
-                <!-- Modal -->
                 <div class="modal fade" id="removeModal-{{ book.id }}" tabindex="-1" aria-labelledby="removeModalLabel-{{ book.id }}" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">

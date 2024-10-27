@@ -6,12 +6,10 @@
 <div class="container py-5">
     <h2 class="text-center mb-4">Welcome to Your Dashboard</h2>
 
-    <!-- Link to Add New Book page -->
     <a href="{{ url_for('books.add_book') }}" class="btn btn-primary mb-4">
         Add New Book
     </a>
 
-    <!-- Sort Form -->
     <form method="GET" action="{{ url_for('dashboard.index') }}" class="row g-3 mb-4">
         <div class="col-md-4">
             <label for="genre" class="form-label">Sort by Genre</label>
@@ -41,7 +39,6 @@
         </div>
     </form>
 
-    <!-- Display Books -->
     <div class="row">
         {% for book in books %}
         <div class="col-md-6 mb-4">
@@ -56,13 +53,11 @@
                     <p class="card-text"><strong>Average Rating:</strong> {{ book.avg_rating | round(1) }}</p>
 
                     {% if g.user and book.user_id == g.user.id %}
-                        <!-- Edit and Delete Buttons -->
                         <a href="{{ url_for('books.update_book', id=book.id) }}" class="btn btn-warning btn-sm">Edit</a>
                         <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteBookModal-{{ book.id }}">
                             Delete
                         </button>
 
-                        <!-- Delete Modal -->
                         <div class="modal fade" id="deleteBookModal-{{ book.id }}" tabindex="-1" aria-labelledby="deleteBookLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
